@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Levain & Panary — European Sourdough Companion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            linen: '#F7F4EE',
+            stoneOat: '#EFE9DE',
+            crust: '#27201D',
+            espresso: '#3A302C',
+            terracotta: {
+              DEFAULT: '#B85D36',
+              hover: '#8F3E1E',
+              light: '#F8EFEA',
+              border: '#E3C3B4'
+            },
+            ryeAmber: {
+              DEFAULT: '#C28938',
+              light: '#FAF3E8',
+              dark: '#8C5D19',
+              border: '#E8D4B3'
+            },
+            sageForest: {
+              DEFAULT: '#3E654C',
+              light: '#EEF4F0',
+              border: '#B7D0C1'
+            },
+            chilledCyan: {
+              DEFAULT: '#286273',
+              light: '#EDF5F7',
+              border: '#B3D3DC'
+            }
+          },
+          fontFamily: {
+            serif: ['Fraunces', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Clean custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #EFE9DE;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D1C5B2;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #B3A590;
+    }
+    .timer-ring {
+      transition: stroke-dashoffset 0.8s ease-in-out, stroke 0.5s ease;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+    .card-glass {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+    }
+  </style>
+</head>
+<body class="bg-linen text-crust font-sans min-h-screen flex flex-col antialiased selection:bg-terracotta selection:text-white">
+
+  <!-- Top Navigation Bar -->
+  <header class="border-b border-stoneOat bg-white/85 backdrop-blur sticky top-0 z-30">
+    <div class="max-w-4xl mx-auto px-4 py-3 sm:px-6 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <span class="w-10 h-10 rounded-2xl bg-terracotta-light border border-terracotta-border text-terracotta flex items-center justify-center text-xl shadow-xs font-serif">🌾</span>
+        <div>
+          <h1 class="font-serif font-bold text-lg sm:text-xl text-crust tracking-tight flex items-center gap-2">
+            Levain &amp; Panary
+            <span class="text-[10px] font-sans font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-ryeAmber-light text-ryeAmber-dark border border-ryeAmber-border">24h Cycle • EU Standard</span>
+          </h1>
+          <p class="text-xs text-espresso/70">Artisanal European Sourdough Maintenance</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <!-- Audio Synth Chime Toggle -->
+        <button id="soundToggleBtn" title="Toggle audio chime" class="p-2.5 rounded-xl border border-stoneOat bg-white text-espresso/80 hover:text-terracotta hover:border-terracotta/40 transition">
+          <svg id="soundIconOn" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+          </svg>
+          <svg id="soundIconOff" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+          </svg>
+        </button>
+
+        <!-- Push Notifications Toggle & Direct Test -->
+        <div class="flex items-center gap-1 bg-white border border-stoneOat p-1 rounded-xl shadow-xs">
+          <button id="notifyToggleBtn" title="Toggle push notifications" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition text-espresso/80 hover:text-terracotta">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+            <span id="notifyBtnLabel">Alerts Off</span>
+          </button>
+          <button id="testNotifyBtn" title="Trigger a test reminder & chime" class="px-2 py-1 text-[11px] font-medium rounded-md bg-stoneOat hover:bg-stone-300 text-espresso/80 hover:text-crust transition">
+            Test
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 space-y-6">
+
+    <!-- Toast Notification Overlay -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 max-w-sm w-full bg-crust text-white p-4 rounded-2xl shadow-2xl flex items-center gap-3 border border-stone-700 pointer-events-none">
+      <div id="toastIcon" class="p-2 rounded-xl bg-terracotta text-white shrink-0 text-base">🍞</div>
+      <div class="flex-1">
+        <p id="toastTitle" class="text-xs font-bold uppercase tracking-wider text-ryeAmber"></p>
+        <p id="toastMsg" class="text-xs sm:text-sm font-medium text-linen"></p>
+      </div>
+    </div>
+
+    <!-- Active Starter Section -->
+    <div id="activeStarterSection" class="space-y-6">
+
+      <!-- Profile Header Summary -->
+      <section class="card-glass rounded-3xl p-5 sm:p-7 border border-stoneOat shadow-sm relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-ryeAmber-light rounded-full blur-2xl pointer-events-none opacity-60"></div>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
+          <div>
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <h2 id="displayStarterName" class="font-serif font-bold text-2xl sm:text-3xl text-crust"></h2>
+              <span id="displayStatusBadge" class="text-xs font-bold px-3 py-1 rounded-full border"></span>
+              <span id="displayMaturityBadge" class="text-xs font-semibold px-2.5 py-0.5 rounded-full border"></span>
+            </div>
+            <p id="displayStageSubtitle" class="text-xs sm:text-sm text-espresso/80 mt-1.5 font-medium"></p>
+          </div>
+
+          <div class="flex items-center gap-3 bg-linen/90 border border-stoneOat rounded-2xl px-4 py-2.5 self-start sm:self-auto shadow-xs">
+            <div class="text-center">
+              <span class="block text-[10px] font-bold text-espresso/60 uppercase tracking-widest">Age</span>
+              <span id="displayAge" class="font-serif font-bold text-lg text-crust">1 Day</span>
+            </div>
+            <div class="w-px h-7 bg-stoneOat"></div>
+            <div class="text-center">
+              <span class="block text-[10px] font-bold text-espresso/60 uppercase tracking-widest">Feedings</span>
+              <span id="displayFeedCount" class="font-serif font-bold text-lg text-terracotta">0</span>
+            </div>
+            <div class="w-px h-7 bg-stoneOat"></div>
+            <div class="text-center">
+              <span class="block text-[10px] font-bold text-espresso/60 uppercase tracking-widest">Cadence</span>
+              <span id="displayCadence" class="text-xs font-semibold text-espresso">Once / 24h</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- European Ambient Temperature Advisory Pill -->
+      <div class="p-3.5 rounded-2xl bg-ryeAmber-light border border-ryeAmber-border flex items-start gap-3 text-xs text-espresso">
+        <span class="text-base shrink-0 mt-0.5">🌡️</span>
+        <div class="leading-relaxed">
+          <strong class="font-semibold text-crust">European Ambient Context (19°C–21°C):</strong>
+          Standard European room temperatures naturally slow fermentation just enough so that a <strong>1:2:2 ratio</strong> peaks smoothly around the 18–22 hour mark and holds gently until the 24-hour feed, preventing rapid acid build-up.
+        </div>
+      </div>
+
+      <!-- Prominent 24h Timer & Hero View -->
+      <section class="card-glass rounded-3xl p-6 sm:p-8 border border-stoneOat shadow-sm flex flex-col items-center text-center relative">
+        <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center my-2">
+          <!-- Circular Progress Ring -->
+          <svg class="w-full h-full" viewBox="0 0 200 200">
+            <!-- Background Track -->
+            <circle cx="100" cy="100" r="82" class="text-stoneOat" stroke-width="12" stroke="currentColor" fill="transparent" />
+            <!-- Active Progress Ring -->
+            <circle id="timerProgressRing" cx="100" cy="100" r="82" class="timer-ring text-terracotta" stroke-width="12" stroke-linecap="round" stroke="currentColor" fill="transparent" stroke-dasharray="515.22" stroke-dashoffset="0" />
+          </svg>
+
+          <!-- Inside Ring Content -->
+          <div class="absolute flex flex-col items-center justify-center px-4 max-w-[210px]">
+            <span id="timerStatusLabel" class="text-[11px] font-bold uppercase tracking-widest text-espresso/60 mb-1">Time To Next Feed</span>
+            <div id="countdownDigits" class="font-serif font-bold text-3xl sm:text-4xl text-crust tracking-tight">--:--:--</div>
+            <span id="nextFeedDateTime" class="text-[11px] text-espresso/70 mt-1.5 font-medium leading-tight">Due: --</span>
+          </div>
+        </div>
+
+        <!-- Timer State Status Ribbon -->
+        <div id="timerStateBanner" class="w-full max-w-md my-2 p-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition">
+          <!-- Dynamically populated: On Track, Due Soon (< 3h), or Overdue -->
+        </div>
+
+        <!-- Active Ratio Formula Pill -->
+        <div id="formulaAdvicePill" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-linen border border-stoneOat text-xs font-medium text-espresso/85 mb-6">
+          <span>Active Ratio: <strong id="formulaLabel">1 : 2 : 2</strong></span>
+          <span class="w-1 h-1 rounded-full bg-espresso/40"></span>
+          <span id="formulaDetail">Retain 25g Starter + 50g Strong White Flour + 50g Tepid Water (24°C–26°C)</span>
+        </div>
+
+        <!-- Context-Aware Primary Action Buttons -->
+        <div class="w-full max-w-md grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Feed Button (Active when starter exists) -->
+          <button id="openFeedModalBtn" class="sm:col-span-2 w-full py-4 px-6 rounded-2xl bg-terracotta hover:bg-terracotta-hover text-white font-semibold shadow-lg shadow-terracotta/20 active:scale-[0.98] transition flex items-center justify-center gap-2 text-base">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+            Feed Current Starter
+          </button>
+
+          <!-- Refrigerate Button (Visible when at Room Temp) -->
+          <button id="refrigerateBtn" class="w-full py-3 px-4 rounded-2xl border border-stoneOat bg-white hover:border-chilledCyan hover:bg-chilledCyan-light text-espresso font-semibold active:scale-[0.98] transition flex items-center justify-center gap-2 text-sm shadow-xs">
+            <svg class="w-4 h-4 text-chilledCyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            Move to Fridge (3°C–5°C)
+          </button>
+
+          <!-- Reactivate Button (Visible only when Refrigerated) -->
+          <button id="reactivateBtn" class="hidden w-full py-3 px-4 rounded-2xl border border-ryeAmber bg-ryeAmber-light hover:bg-ryeAmber/20 text-ryeAmber-dark font-semibold active:scale-[0.98] transition flex items-center justify-center gap-2 text-sm shadow-xs">
+            <svg class="w-4 h-4 text-ryeAmber-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            Reactivate Starter
+          </button>
+
+          <!-- Reset / New Starter Button -->
+          <button id="promptNewStarterBtn" class="w-full py-3 px-4 rounded-2xl border border-stoneOat bg-white hover:border-stone-400 text-espresso/70 hover:text-crust font-medium active:scale-[0.98] transition flex items-center justify-center gap-2 text-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Reset / New Starter
+          </button>
+        </div>
+      </section>
+
+      <!-- European Toolkit: Scaler, Log (24h clock), Sourdough Health Guide -->
+      <section class="card-glass rounded-3xl p-5 sm:p-7 border border-stoneOat shadow-sm space-y-5">
+        <!-- Tab Navigation -->
+        <div class="flex items-center gap-2 border-b border-stoneOat pb-3 overflow-x-auto">
+          <button id="tabBtnCalc" class="tab-button px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-crust text-white" onclick="switchTab('calc')">European Levain Scaler</button>
+          <button id="tabBtnLogs" class="tab-button px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-linen text-espresso hover:text-crust" onclick="switchTab('logs')">Feeding Log</button>
+          <button id="tabBtnGuide" class="tab-button px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-linen text-espresso hover:text-crust" onclick="switchTab('guide')">Health &amp; Troubleshooting</button>
+        </div>
+
+        <!-- Tab 1: European Levain Scaler -->
+        <div id="tabContentCalc" class="space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 class="font-serif font-bold text-lg text-crust">Baking Levain Scaler (Metric)</h3>
+              <p class="text-xs text-espresso/70">Calculates precise gram weights for your bread formula's levain build.</p>
+            </div>
+            <!-- Ratio Toggle -->
+            <div class="flex items-center gap-1 bg-linen p-1 rounded-xl border border-stoneOat self-start">
+              <button class="ratio-btn px-2.5 py-1 text-xs font-bold rounded-lg bg-white shadow-xs text-crust" onclick="setCalcRatio(1, 2, 2, this)">1:2:2 (24h Standard)</button>
+              <button class="ratio-btn px-2.5 py-1 text-xs font-bold rounded-lg text-espresso/70 hover:text-crust" onclick="setCalcRatio(1, 1, 1, this)">1:1:1 (Equal)</button>
+              <button class="ratio-btn px-2.5 py-1 text-xs font-bold rounded-lg text-espresso/70 hover:text-crust" onclick="setCalcRatio(1, 5, 5, this)">1:5:5 (Slow Overnight)</button>
+            </div>
+          </div>
+
+          <!-- Total Levain Slider -->
+          <div class="space-y-2 bg-linen/70 p-4 rounded-2xl border border-stoneOat">
+            <div class="flex justify-between items-center text-sm font-semibold">
+              <span>Required Levain Yield:</span>
+              <span id="targetWeightDisplay" class="font-serif text-base text-terracotta font-bold">125 grams</span>
+            </div>
+            <input type="range" id="targetWeightSlider" min="50" max="600" step="25" value="125" class="w-full accent-terracotta cursor-pointer">
+            <div class="flex justify-between text-[11px] text-espresso/50">
+              <span>50g (Maintenance)</span>
+              <span>150g (1 Boule)</span>
+              <span>300g (2 Batards)</span>
+              <span>600g (Batch Bake)</span>
+            </div>
+          </div>
+
+          <!-- Calculated Quantities Display -->
+          <div class="grid grid-cols-3 gap-3">
+            <div class="p-3.5 rounded-2xl bg-white border border-stoneOat text-center shadow-xs">
+              <span class="block text-[11px] font-bold text-espresso/60 uppercase">Starter Retained</span>
+              <span id="calcStarterWeight" class="font-serif font-bold text-xl sm:text-2xl text-terracotta">25g</span>
+              <span class="text-[10px] text-espresso/60 block mt-0.5">Active levain</span>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-white border border-stoneOat text-center shadow-xs">
+              <span class="block text-[11px] font-bold text-espresso/60 uppercase">Strong White Flour</span>
+              <span id="calcFlourWeight" class="font-serif font-bold text-xl sm:text-2xl text-crust">50g</span>
+              <span class="text-[10px] text-espresso/60 block mt-0.5">T65 / Type 550 / Tipo 0</span>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-white border border-stoneOat text-center shadow-xs">
+              <span class="block text-[11px] font-bold text-espresso/60 uppercase">Tepid Water</span>
+              <span id="calcWaterWeight" class="font-serif font-bold text-xl sm:text-2xl text-chilledCyan">50g</span>
+              <span class="text-[10px] text-espresso/60 block mt-0.5">24°C–26°C</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Feeding Log (Strict 24h & DD/MM/YYYY) -->
+        <div id="tabContentLogs" class="hidden space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="font-serif font-bold text-lg text-crust">Feeding Log &amp; History</h3>
+            <span id="logCountBadge" class="text-xs px-2.5 py-0.5 rounded-full bg-stoneOat text-espresso font-semibold">0 entries</span>
+          </div>
+          <div id="logListContainer" class="max-h-64 overflow-y-auto space-y-2 pr-1">
+            <!-- Feed history rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Tab 3: Health & Troubleshooting Guide -->
+        <div id="tabContentGuide" class="hidden space-y-4 text-xs sm:text-sm text-espresso">
+          <div class="p-4 rounded-2xl bg-ryeAmber-light border border-ryeAmber-border space-y-2">
+            <h4 class="font-serif font-bold text-base text-crust">The European 24-Hour 1:2:2 Method</h4>
+            <p class="leading-relaxed text-espresso/90 text-xs sm:text-sm">
+              Standard 1:1:1 ratios quickly deplete all starches within 10–12 hours. By reducing retained starter to <strong>25g</strong> and providing <strong>50g Strong White Flour + 50g water (1:2:2 ratio)</strong>, there is four times as much food relative to starter volume. In typical European home environments (<strong>19°C–21°C</strong>), this creates a gentle 24-hour maturation cycle without requiring twice-daily feedings.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <!-- Float Test -->
+            <div class="p-4 rounded-2xl bg-white border border-stoneOat space-y-1.5 shadow-xs">
+              <div class="flex items-center gap-1.5 text-terracotta font-bold text-sm">
+                <span>🌊</span> The Float Test
+              </div>
+              <p class="text-espresso/80">
+                Gently drop a teaspoon of starter into water at 20°C. If it floats buoyantly, the gluten network is trapping carbon dioxide and the starter is at peak baking strength.
+              </p>
+            </div>
+
+            <!-- Hooch -->
+            <div class="p-4 rounded-2xl bg-white border border-stoneOat space-y-1.5 shadow-xs">
+              <div class="flex items-center gap-1.5 text-ryeAmber-dark font-bold text-sm">
+                <span>🥃</span> Dark Liquid on Top (Hooch)
+              </div>
+              <p class="text-espresso/80">
+                A greyish or amber alcoholic liquid on the surface simply indicates your starter has digested all available flour and is hungry. Pour it off or stir it back in, then feed 1:2:2 immediately.
+              </p>
+            </div>
+
+            <!-- Aroma Check -->
+            <div class="p-4 rounded-2xl bg-white border border-stoneOat space-y-1.5 shadow-xs">
+              <div class="flex items-center gap-1.5 text-sageForest font-bold text-sm">
+                <span>👃</span> Aroma &amp; Acid Check
+              </div>
+              <p class="text-espresso/80">
+                Healthy cultures smell pleasant, tangy, and yeasty like fresh apples, sourdough bread, or mild yoghurt. If it smells strongly sharp like nail polish remover (acetone), it is overdue for a feeding.
+              </p>
+            </div>
+
+            <!-- Mold vs Kahm Yeast -->
+            <div class="p-4 rounded-2xl bg-white border border-stoneOat space-y-1.5 shadow-xs">
+              <div class="flex items-center gap-1.5 text-red-700 font-bold text-sm">
+                <span>⚠️</span> Mold vs. Kahm Yeast
+              </div>
+              <p class="text-espresso/80">
+                A powdery white, wrinkly film on top is harmless Kahm yeast (skim off and feed). If you see <em>fuzzy pink, orange, green, or black spots</em>, discard immediately and start fresh.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Empty State (No Starter Initialized) -->
+    <div id="noStarterSection" class="hidden card-glass rounded-3xl p-8 sm:p-12 border border-stoneOat shadow-sm text-center max-w-lg mx-auto">
+      <div class="w-20 h-20 mx-auto rounded-3xl bg-ryeAmber-light border border-ryeAmber-border text-ryeAmber-dark flex items-center justify-center text-4xl mb-4 font-serif">
+        🥣
+      </div>
+      <h2 class="font-serif font-bold text-2xl sm:text-3xl text-crust mb-2">Create Your Sourdough Culture</h2>
+      <p class="text-xs sm:text-sm text-espresso/70 mb-6 leading-relaxed">
+        Cultivate a thriving wild yeast starter with a manageable once-every-24-hours feeding schedule. Minimal discard, no twice-daily chore, calibrated for European ambient temperatures.
+      </p>
+      <button onclick="openNewStarterModal()" class="w-full py-4 px-6 rounded-2xl bg-terracotta hover:bg-terracotta-hover text-white font-semibold shadow-lg shadow-terracotta/25 transition active:scale-[0.98] flex items-center justify-center gap-2">
+        <span>✨ Create Day 1 Starter</span>
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-auto py-6 border-t border-stoneOat text-center text-xs text-espresso/60">
+    <p>Levain &amp; Panary • European 24-Hour 1:2:2 Protocol • 100% Offline Capable</p>
+  </footer>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Modal 1: Step-by-Step Feeding Walkthrough Modal -->
+  <div id="feedModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-crust/50 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-stoneOat space-y-5">
+      <div class="flex items-center justify-between border-b border-stoneOat pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-8 h-8 rounded-xl bg-terracotta-light border border-terracotta-border text-terracotta flex items-center justify-center font-bold text-base">⚖️</span>
+          <div>
+            <h3 class="font-serif font-bold text-lg sm:text-xl text-crust" id="feedModalTitle">Feed Starter</h3>
+            <span class="text-[11px] font-semibold text-terracotta" id="feedModalSubtitle">24-Hour Schedule</span>
+          </div>
+        </div>
+        <button onclick="closeModal('feedModal')" class="text-espresso/50 hover:text-crust p-1.5 rounded-lg text-lg">&times;</button>
+      </div>
+
+      <!-- Exact Gram Weight Callouts -->
+      <div class="grid grid-cols-3 gap-2 text-center">
+        <div class="p-2.5 rounded-2xl bg-linen border border-stoneOat">
+          <span class="block text-[10px] font-bold text-espresso/60 uppercase">Starter</span>
+          <span id="feedRetainGrams" class="font-serif font-bold text-lg text-terracotta">25g</span>
+          <span class="text-[9px] text-espresso/50 block">Retain</span>
+        </div>
+        <div class="p-2.5 rounded-2xl bg-linen border border-stoneOat">
+          <span class="block text-[10px] font-bold text-espresso/60 uppercase">Flour</span>
+          <span id="feedFlourGrams" class="font-serif font-bold text-lg text-crust">50g</span>
+          <span id="feedFlourTypeLabel" class="text-[9px] text-espresso/50 block truncate">Strong White</span>
+        </div>
+        <div class="p-2.5 rounded-2xl bg-linen border border-stoneOat">
+          <span class="block text-[10px] font-bold text-espresso/60 uppercase">Tepid Water</span>
+          <span id="feedWaterGrams" class="font-serif font-bold text-lg text-chilledCyan">50g</span>
+          <span class="text-[9px] text-espresso/50 block">24°C–26°C</span>
+        </div>
+      </div>
+
+      <!-- Step Checklist -->
+      <div class="space-y-2.5 text-xs text-espresso">
+        <label class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-linen transition cursor-pointer select-none">
+          <input type="checkbox" id="stepCheck1" class="mt-0.5 rounded text-terracotta focus:ring-terracotta/30">
+          <span>Stir starter down, discard excess into a jar, retaining exactly <strong id="step1RetainText">25g</strong> in the jar.</span>
+        </label>
+        <label class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-linen transition cursor-pointer select-none">
+          <input type="checkbox" id="stepCheck2" class="mt-0.5 rounded text-terracotta focus:ring-terracotta/30">
+          <span>Pour in <strong id="step2WaterText">50g tepid water (24°C–26°C)</strong>; whisk or stir to dissolve into a milky slurry.</span>
+        </label>
+        <label class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-linen transition cursor-pointer select-none">
+          <input type="checkbox" id="stepCheck3" class="mt-0.5 rounded text-terracotta focus:ring-terracotta/30">
+          <span>Add <strong id="step3FlourText">50g Strong White Flour (T65 / Type 550 / Tipo 0)</strong>. Mix thoroughly until no dry pockets remain.</span>
+        </label>
+        <label class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-linen transition cursor-pointer select-none">
+          <input type="checkbox" id="stepCheck4" class="mt-0.5 rounded text-terracotta focus:ring-terracotta/30">
+          <span>Scrape down jar sides, rest lid loosely to permit CO₂ venting, and leave at room temperature (19°C–21°C).</span>
+        </label>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-2.5 pt-1">
+        <button onclick="closeModal('feedModal')" class="w-1/3 py-3 px-4 rounded-xl border border-stoneOat text-espresso font-semibold hover:bg-linen transition text-xs sm:text-sm">Cancel</button>
+        <button onclick="confirmFeeding()" class="w-2/3 py-3 px-4 rounded-xl bg-terracotta hover:bg-terracotta-hover text-white font-semibold transition text-xs sm:text-sm shadow-md shadow-terracotta/20 flex items-center justify-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Log Feed &amp; Set 24h Timer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Refrigerate Walkthrough & Maturity Warning Modal -->
+  <div id="refrigerateModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-crust/50 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-stoneOat space-y-4">
+      <!-- Immature Warning (Conditional) -->
+      <div id="immatureWarningCard" class="hidden p-4 rounded-2xl bg-amber-50 border border-amber-300 text-amber-900 space-y-2">
+        <div class="flex items-center gap-2 font-bold text-sm text-amber-800">
+          <svg class="w-5 h-5 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          <span>Starter Still Maturing (Day <span id="warningAgeNum"></span>)</span>
+        </div>
+        <p class="text-xs leading-relaxed text-amber-800">
+          Starters require at least <strong>7 days and 7 successful feedings</strong> to build the colony density and acidic pH necessary to safely withstand cold dormancy. Refrigerating prematurely may stall young wild yeast development.
+        </p>
+      </div>
+
+      <div class="space-y-1">
+        <h3 class="font-serif font-bold text-lg sm:text-xl text-crust">Refrigerator Cold Storage (3°C–5°C)</h3>
+        <p class="text-xs text-espresso/70">
+          In cold storage, microbial activity slows dramatically. Feed once every <strong>7 days (168 hours)</strong>.
+        </p>
+      </div>
+
+      <div class="p-3.5 rounded-2xl bg-linen border border-stoneOat space-y-2 text-xs text-espresso">
+        <p class="font-bold text-crust">Steps Before Placing in Refrigerator:</p>
+        <ol class="list-decimal list-inside space-y-1 text-espresso/80">
+          <li>Retain <strong>25g starter</strong> + add <strong>50g water (24°C–26°C)</strong> + <strong>50g Strong White Flour</strong> (1:2:2).</li>
+          <li>Leave on the counter at room temp (19°C–21°C) for <strong>1 to 2 hours</strong> until fermentation initiates and small bubbles emerge.</li>
+          <li>Cover loosely and place in the main compartment of your fridge (<strong>3°C–5°C</strong>).</li>
+        </ol>
+      </div>
+
+      <div class="flex gap-2.5 pt-1">
+        <button onclick="closeModal('refrigerateModal')" class="w-1/2 py-3 px-4 rounded-xl border border-stoneOat text-espresso font-semibold hover:bg-linen transition text-xs sm:text-sm">Cancel</button>
+        <button onclick="confirmRefrigerate()" class="w-1/2 py-3 px-4 rounded-xl bg-chilledCyan hover:bg-[#1D4A57] text-white font-semibold transition text-xs sm:text-sm shadow-md">
+          Chilled &amp; Start 7-Day Timer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Reactivate Chilled Starter Modal -->
+  <div id="reactivateModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-crust/50 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-stoneOat space-y-4">
+      <div class="flex items-center gap-2.5 border-b border-stoneOat pb-3">
+        <span class="w-8 h-8 rounded-xl bg-ryeAmber-light border border-ryeAmber-border text-ryeAmber-dark flex items-center justify-center font-bold text-base">☀️</span>
+        <h3 class="font-serif font-bold text-xl text-crust">Reactivate Chilled Culture</h3>
+      </div>
+
+      <p class="text-xs text-espresso/70 leading-relaxed">
+        Waking up your starter from the fridge for active baking or daily room-temperature maintenance.
+      </p>
+
+      <div class="p-3.5 rounded-2xl bg-linen border border-stoneOat space-y-2 text-xs text-espresso">
+        <p class="font-bold text-crust">Reactivation Instructions:</p>
+        <ol class="list-decimal list-inside space-y-1 text-espresso/80">
+          <li>Take the jar out of the fridge; rest at room temperature (19°C–21°C) for 1 hour to take the chill off.</li>
+          <li>Retain <strong>25g starter</strong>, discard the remainder into your discard jar.</li>
+          <li>Feed with <strong>50g warm water (26°C)</strong> + <strong>50g Strong White Flour</strong> (1:2:2).</li>
+          <li>The app will switch back to the active <strong>24-hour feeding countdown</strong>.</li>
+        </ol>
+      </div>
+
+      <div class="flex gap-2.5 pt-1">
+        <button onclick="closeModal('reactivateModal')" class="w-1/3 py-3 px-4 rounded-xl border border-stoneOat text-espresso font-semibold hover:bg-linen transition text-xs sm:text-sm">Cancel</button>
+        <button onclick="confirmReactivate()" class="w-2/3 py-3 px-4 rounded-xl bg-ryeAmber text-crust hover:bg-ryeAmber-dark hover:text-white font-bold transition text-xs sm:text-sm shadow-md">
+          Confirm Reactivation
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: New / Reset Starter Wizard Modal -->
+  <div id="newStarterModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-crust/50 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-stoneOat space-y-5">
+      <div class="flex items-center justify-between border-b border-stoneOat pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-8 h-8 rounded-xl bg-terracotta-light border border-terracotta-border text-terracotta flex items-center justify-center font-bold text-base">🌾</span>
+          <h3 class="font-serif font-bold text-xl text-crust">Start a New Culture</h3>
+        </div>
+        <button onclick="closeModal('newStarterModal')" class="text-espresso/50 hover:text-crust p-1.5 rounded-lg">&times;</button>
+      </div>
+
+      <div id="newStarterWarning" class="hidden p-3 rounded-2xl bg-red-50 border border-red-200 text-red-900 text-xs">
+        ⚠️ <strong>Note:</strong> Starting fresh will replace your existing tracked starter and feeding logs.
+      </div>
+
+      <form id="newStarterForm" onsubmit="handleCreateStarter(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-espresso uppercase tracking-wider mb-1">Starter Name</label>
+          <input type="text" id="inputStarterName" required placeholder="e.g., Levain de Campagne, Roggen, Pierre" class="w-full px-4 py-2.5 rounded-xl border border-stoneOat bg-linen focus:bg-white focus:outline-none focus:ring-2 focus:ring-terracotta/40 text-sm font-medium">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-espresso uppercase tracking-wider mb-1">Day 1 Flour Choice</label>
+          <select id="inputFlourType" class="w-full px-4 py-2.5 rounded-xl border border-stoneOat bg-linen focus:bg-white focus:outline-none focus:ring-2 focus:ring-terracotta/40 text-sm font-medium">
+            <option value="Wholemeal / Rye (T150 / Type 1050 / Integrale)">Wholemeal / Rye (T150 / Type 1050 / Integrale) — Recommended</option>
+            <option value="Whole Rye (Type 1150 / Roggen)">Whole Rye Flour (Fastest Wild Yeast Colonisation)</option>
+            <option value="Strong White Flour (T65 / Type 550 / Tipo 0)">Strong White Flour (T65 / Type 550 / Tipo 0)</option>
+          </select>
+          <p class="text-[11px] text-espresso/60 mt-1">Whole grain bran and germ carry the richest natural wild yeast communities.</p>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-linen border border-stoneOat text-xs space-y-1">
+          <span class="font-bold text-crust block">Day 1 Protocol:</span>
+          <p class="text-espresso/70">Mix <strong>50g flour</strong> with <strong>50g tepid water (24°C–26°C)</strong>. Cover loosely. Place in a draft-free 19°C–21°C spot for <strong>24 hours</strong>.</p>
+        </div>
+
+        <div class="flex gap-2.5 pt-1">
+          <button type="button" onclick="closeModal('newStarterModal')" class="w-1/3 py-3 px-4 rounded-xl border border-stoneOat text-espresso font-semibold hover:bg-linen transition text-xs sm:text-sm">Cancel</button>
+          <button type="submit" class="w-2/3 py-3 px-4 rounded-xl bg-terracotta hover:bg-terracotta-hover text-white font-semibold transition text-xs sm:text-sm shadow-md shadow-terracotta/20">
+            Create Day 1 Starter
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 5: Custom Confirmation Dialog (No window.confirm) -->
+  <div id="confirmModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-crust/50 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-stoneOat space-y-4">
+      <div class="flex items-center gap-3">
+        <div id="confirmModalIcon" class="w-10 h-10 rounded-2xl bg-terracotta-light border border-terracotta-border text-terracotta flex items-center justify-center text-xl shrink-0">⚠️</div>
+        <div>
+          <h3 id="confirmModalTitle" class="font-serif font-bold text-lg text-crust">Are you sure?</h3>
+          <p id="confirmModalMsg" class="text-xs text-espresso/80 mt-0.5">This action cannot be undone.</p>
+        </div>
+      </div>
+      <div class="flex gap-2 pt-2">
+        <button id="confirmCancelBtn" class="w-1/2 py-2.5 px-3 rounded-xl border border-stoneOat text-espresso text-xs font-semibold hover:bg-linen">Cancel</button>
+        <button id="confirmProceedBtn" class="w-1/2 py-2.5 px-3 rounded-xl bg-terracotta hover:bg-terracotta-hover text-white text-xs font-semibold shadow-sm">Proceed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Application Logic -->
+  <script>
+    const STORAGE_KEY = 'levain_eu_24h_companion_v3';
+    const NOTIF_STORAGE_KEY = 'levain_eu_notif_enabled';
+    const SOUND_STORAGE_KEY = 'levain_eu_sound_enabled';
+
+    let appState = {
+      starter: null
+    };
+
+    let notificationsAllowed = localStorage.getItem(NOTIF_STORAGE_KEY) === 'true';
+    let soundEnabled = localStorage.getItem(SOUND_STORAGE_KEY) !== 'false';
+    let timerInterval = null;
+    let notifCheckInterval = null;
+
+    // Default calculator ratio: 1:2:2
+    let calcRatio = { starter: 1, flour: 2, water: 2 };
+
+    // --- European Strict 24-Hour & Date Formatters ---
+    function format24hTime(dateObj) {
+      const hours = String(dateObj.getHours()).padStart(2, '0');
+      const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+      return `${hours}:${minutes}`;
+    }
+
+    function formatEuDate(dateObj) {
+      const day = String(dateObj.getDate()).padStart(2, '0');
+      const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const year = dateObj.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+
+    function formatEuDateTime(timestamp) {
+      const d = new Date(timestamp);
+      return `${formatEuDate(d)}, ${format24hTime(d)}`;
+    }
+
+    // --- Web Audio Synth Chimes (Self-contained, bakery bell belltone) ---
+    function playChime(type = 'success') {
+      if (!soundEnabled) return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const now = ctx.currentTime;
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === 'success') {
+          // Warm harmonic chime (F5 to C6)
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(698.46, now); // F5
+          osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.15); // C6
+          gain.gain.setValueAtTime(0.20, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+          osc.start(now);
+          osc.stop(now + 0.7);
+        } else if (type === 'alert') {
+          // Bakery oven timer double-tap
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(587.33, now); // D5
+          osc.frequency.setValueAtTime(440.00, now + 0.12); // A4
+          gain.gain.setValueAtTime(0.22, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+          osc.start(now);
+          osc.stop(now + 0.5);
+        }
+      } catch (err) {
+        console.warn('AudioContext requires user gesture', err);
+      }
+    }
+
+    // --- Toast UI Notifications ---
+    function showToast(title, message, icon = '🍞') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastTitle').textContent = title;
+      document.getElementById('toastMsg').textContent = message;
+      document.getElementById('toastIcon').textContent = icon;
+
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3600);
+    }
+
+    // --- Modal Helpers ---
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    }
+
+    function showConfirmModal(title, msg, onConfirm) {
+      const modal = document.getElementById('confirmModal');
+      document.getElementById('confirmModalTitle').textContent = title;
+      document.getElementById('confirmModalMsg').textContent = msg;
+
+      const proceedBtn = document.getElementById('confirmProceedBtn');
+      const cancelBtn = document.getElementById('confirmCancelBtn');
+
+      const cleanup = () => {
+        modal.classList.add('hidden');
+        proceedBtn.onclick = null;
+        cancelBtn.onclick = null;
+      };
+
+      proceedBtn.onclick = () => {
+        cleanup();
+        onConfirm();
+      };
+      cancelBtn.onclick = () => {
+        cleanup();
+      };
+
+      modal.classList.remove('hidden');
+    }
+
+    // --- State Persistence ---
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          appState = JSON.parse(raw);
+        }
+      } catch (e) {
+        console.error('State parse failed:', e);
+      }
+    }
+
+    // --- European Sourdough Protocol Intelligence ---
+    function getStarterAgeInDays(createdAt) {
+      const ms = Date.now() - createdAt;
+      return Math.max(1, Math.floor(ms / (1000 * 60 * 60 * 24)) + 1);
+    }
+
+    function getScheduleDetails(starter) {
+      if (!starter) {
+        return {
+          intervalHours: 24,
+          ratio: '1:1:1',
+          retain: 50,
+          flour: 50,
+          water: 50,
+          flourName: 'Strong White Flour (T65 / Type 550 / Tipo 0)',
+          isMature: false,
+          label: '24h European Cycle'
+        };
+      }
+
+      if (starter.isRefrigerated) {
+        return {
+          intervalHours: 168, // 7 days = 168 hours
+          ratio: '1:2:2',
+          retain: 25,
+          flour: 50,
+          water: 50,
+          flourName: 'Strong White Flour (T65 / Type 550 / Tipo 0)',
+          isMature: true,
+          label: 'Chilled Dormancy (7-Day Refrigerator Cycle, 3°C–5°C)'
+        };
+      }
+
+      const age = getStarterAgeInDays(starter.createdAt);
+      const isMature = age >= 7 && starter.feedCount >= 7;
+
+      if (age === 1) {
+        return {
+          intervalHours: 24,
+          ratio: '1:1 Initial Blend',
+          retain: 0,
+          flour: 50,
+          water: 50,
+          flourName: starter.flour || 'Wholemeal / Rye (T150 / Type 1050 / Integrale)',
+          isMature: false,
+          label: 'Day 1: Initial 24-Hour Microbial Awakening'
+        };
+      } else if (age <= 3) {
+        // Days 2 and 3: 1:1:1 once daily
+        return {
+          intervalHours: 24,
+          ratio: '1:1:1',
+          retain: 50,
+          flour: 50,
+          water: 50,
+          flourName: 'Strong White Flour (T65 / Type 550 / Tipo 0)',
+          isMature: false,
+          label: `Day ${age}: 1:1:1 Awakening Feed (24h Cadence)`
+        };
+      } else {
+        // Days 4+ Room Temp: 1:2:2 once daily (25g starter + 50g flour + 50g water)
+        return {
+          intervalHours: 24,
+          ratio: '1:2:2',
+          retain: 25,
+          flour: 50,
+          water: 50,
+          flourName: 'Strong White Flour (T65 / Type 550 / Tipo 0)',
+          isMature: isMature,
+          label: isMature ? 'Mature & Active: 1:2:2 Daily 24h Feed' : `Day ${age}: 1:2:2 Ferment Sustaining Feed`
+        };
+      }
+    }
+
+    // --- UI Update Coordinator ---
+    function updateUI() {
+      const activeSection = document.getElementById('activeStarterSection');
+      const noStarterSection = document.getElementById('noStarterSection');
+
+      if (!appState.starter) {
+        activeSection.classList.add('hidden');
+        noStarterSection.classList.remove('hidden');
+        return;
+      }
+
+      activeSection.classList.remove('hidden');
+      noStarterSection.classList.add('hidden');
+
+      const s = appState.starter;
+      const age = getStarterAgeInDays(s.createdAt);
+      const schedule = getScheduleDetails(s);
+
+      // Header summary
+      document.getElementById('displayStarterName').textContent = s.name;
+      document.getElementById('displayAge').textContent = age === 1 ? '1 Day' : `${age} Days`;
+      document.getElementById('displayFeedCount').textContent = s.feedCount;
+
+      // Status badges
+      const statusBadge = document.getElementById('displayStatusBadge');
+      const maturityBadge = document.getElementById('displayMaturityBadge');
+
+      if (s.isRefrigerated) {
+        statusBadge.textContent = '❄️ Dormant (Fridge 3°C–5°C)';
+        statusBadge.className = 'text-xs font-bold px-3 py-1 rounded-full border bg-chilledCyan-light border-chilledCyan-border text-chilledCyan';
+      } else {
+        statusBadge.textContent = '🌡️ Room Temp (19°C–21°C)';
+        statusBadge.className = 'text-xs font-bold px-3 py-1 rounded-full border bg-sageForest-light border-sageForest-border text-sageForest';
+      }
+
+      if (schedule.isMature) {
+        maturityBadge.textContent = '🌟 Mature & Active';
+        maturityBadge.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-sageForest-light text-sageForest border border-sageForest-border';
+      } else {
+        maturityBadge.textContent = `🌱 Establishing (Day ${age} of 7)`;
+        maturityBadge.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-ryeAmber-light text-ryeAmber-dark border border-ryeAmber-border';
+      }
+
+      document.getElementById('displayStageSubtitle').textContent = schedule.label;
+      document.getElementById('displayCadence').textContent = s.isRefrigerated ? 'Weekly (7d)' : 'Once / 24h';
+
+      // Formula Advice Pill
+      document.getElementById('formulaLabel').textContent = schedule.ratio;
+      document.getElementById('formulaDetail').textContent = `Retain ${schedule.retain}g Starter + ${schedule.flour}g Strong White Flour + ${schedule.water}g Tepid Water (24°C–26°C)`;
+
+      // Fridge vs Reactivate context buttons
+      const refrigerateBtn = document.getElementById('refrigerateBtn');
+      const reactivateBtn = document.getElementById('reactivateBtn');
+
+      if (s.isRefrigerated) {
+        refrigerateBtn.classList.add('hidden');
+        reactivateBtn.classList.remove('hidden');
+      } else {
+        refrigerateBtn.classList.remove('hidden');
+        reactivateBtn.classList.add('hidden');
+      }
+
+      renderFeedLogs();
+      updateTimerDisplay();
+    }
+
+    // --- Live Countdown Engine (Strict 24h & DD/MM/YYYY) ---
+    function updateTimerDisplay() {
+      if (!appState.starter) return;
+
+      const s = appState.starter;
+      const schedule = getScheduleDetails(s);
+      const totalIntervalMs = schedule.intervalHours * 3600 * 1000;
+      const nextDueMs = s.lastFedAt + totalIntervalMs;
+      const now = Date.now();
+      const diffMs = nextDueMs - now;
+
+      const countdownEl = document.getElementById('countdownDigits');
+      const timerProgressRing = document.getElementById('timerProgressRing');
+      const timerStatusLabel = document.getElementById('timerStatusLabel');
+      const timerStateBanner = document.getElementById('timerStateBanner');
+      const nextFeedDateTime = document.getElementById('nextFeedDateTime');
+
+      // Next feed timestamp in strict European format: DD/MM/YYYY, HH:MM (24h)
+      const dueDate = new Date(nextDueMs);
+      const formatted24hStamp = `${formatEuDate(dueDate)}, ${format24hTime(dueDate)}`;
+      nextFeedDateTime.textContent = `Next Feed: ${formatted24hStamp}`;
+
+      const circumference = 515.22;
+
+      if (diffMs > 0) {
+        // Active countdown
+        const totalSecs = Math.floor(diffMs / 1000);
+        const days = Math.floor(totalSecs / 86400);
+        const hours = Math.floor((totalSecs % 86400) / 3600);
+        const minutes = Math.floor((totalSecs % 3600) / 60);
+        const seconds = totalSecs % 60;
+
+        countdownEl.classList.remove('text-red-700', 'text-amber-600');
+        countdownEl.classList.add('text-crust');
+
+        if (days > 0) {
+          countdownEl.textContent = `${days}d ${padZero(hours)}h ${padZero(minutes)}m`;
+        } else {
+          countdownEl.textContent = `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+        }
+
+        // Check if feeding is due soon (< 3 hours)
+        if (diffMs < 3 * 3600 * 1000) {
+          timerStatusLabel.textContent = 'Feeding Due Soon (< 3h)';
+          timerStateBanner.className = 'w-full max-w-md my-2 p-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 bg-amber-50 border border-amber-300 text-amber-900';
+          timerStateBanner.innerHTML = `<span>⏳ Culture is reaching peak activity. Prepare Strong White Flour and tepid water.</span>`;
+          timerProgressRing.setAttribute('stroke', '#C28938');
+        } else {
+          timerStatusLabel.textContent = 'Time To Next Feed';
+          timerStateBanner.className = 'w-full max-w-md my-2 p-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 bg-sageForest-light border border-sageForest-border text-sageForest';
+          timerStateBanner.innerHTML = `<span>✓ On Track • Wild yeasts quietly fermenting at room temperature (19°C–21°C).</span>`;
+          timerProgressRing.setAttribute('stroke', '#B85D36');
+        }
+
+        const elapsed = now - s.lastFedAt;
+        const fraction = Math.min(1, Math.max(0, elapsed / totalIntervalMs));
+        const offset = circumference * (1 - fraction);
+        timerProgressRing.style.strokeDashoffset = offset;
+
+      } else {
+        // Overdue state
+        const elapsedOverdueMs = Math.abs(diffMs);
+        const totalSecs = Math.floor(elapsedOverdueMs / 1000);
+        const hours = Math.floor(totalSecs / 3600);
+        const minutes = Math.floor((totalSecs % 3600) / 60);
+        const seconds = totalSecs % 60;
+
+        timerStatusLabel.textContent = '⚠️ Feed Overdue By';
+        countdownEl.textContent = `+${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+        countdownEl.classList.remove('text-crust');
+        countdownEl.classList.add('text-red-700');
+
+        timerStateBanner.className = 'w-full max-w-md my-2 p-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 bg-red-50 border border-red-300 text-red-900 animate-pulse';
+        timerStateBanner.innerHTML = `<span>🚨 Starter is hungry! Feed now with 1:2:2 ratio to refresh sugar resources and stabilize acidity.</span>`;
+
+        timerProgressRing.style.strokeDashoffset = 0;
+        timerProgressRing.setAttribute('stroke', '#B91C1C');
+      }
+    }
+
+    function padZero(n) {
+      return n < 10 ? '0' + n : n;
+    }
+
+    // --- Action: Feed Starter (Step-by-Step Modal) ---
+    document.getElementById('openFeedModalBtn').onclick = () => {
+      if (!appState.starter) return;
+      const schedule = getScheduleDetails(appState.starter);
+
+      document.getElementById('feedRetainGrams').textContent = `${schedule.retain}g`;
+      document.getElementById('feedFlourGrams').textContent = `${schedule.flour}g`;
+      document.getElementById('feedWaterGrams').textContent = `${schedule.water}g`;
+
+      document.getElementById('step1RetainText').textContent = `${schedule.retain}g`;
+      document.getElementById('step2WaterText').textContent = `${schedule.water}g tepid water (24°C–26°C)`;
+      document.getElementById('step3FlourText').textContent = `${schedule.flour}g ${schedule.flourName}`;
+      document.getElementById('feedFlourTypeLabel').textContent = schedule.flourName.split(' ')[0] + ' ' + schedule.flourName.split(' ')[1];
+
+      document.getElementById('feedModalSubtitle').textContent = schedule.label;
+
+      // Reset checkboxes
+      for (let i = 1; i <= 4; i++) {
+        const cb = document.getElementById(`stepCheck${i}`);
+        if (cb) cb.checked = false;
+      }
+
+      openModal('feedModal');
+    };
+
+    function confirmFeeding() {
+      if (!appState.starter) return;
+
+      const now = Date.now();
+      const schedule = getScheduleDetails(appState.starter);
+
+      appState.starter.lastFedAt = now;
+      appState.starter.feedCount += 1;
+
+      const logItem = {
+        id: Date.now(),
+        timestamp: now,
+        action: appState.starter.isRefrigerated ? 'Chilled Weekly Maintenance' : `24h Room Feed (${schedule.ratio})`,
+        details: `Retained ${schedule.retain}g starter + 50g ${schedule.flourName} + 50g tepid water (24°C–26°C)`
+      };
+
+      if (!appState.starter.history) appState.starter.history = [];
+      appState.starter.history.unshift(logItem);
+
+      saveState();
+      updateUI();
+      closeModal('feedModal');
+      playChime('success');
+      showToast('Starter Fed!', 'Next 24-hour cycle started.', '🌾');
+
+      scheduleNotificationIfDue();
+    }
+
+    // --- Action: Refrigerate Starter (Safety Check for Maturity) ---
+    document.getElementById('refrigerateBtn').onclick = () => {
+      if (!appState.starter) return;
+
+      const age = getStarterAgeInDays(appState.starter.createdAt);
+      const isMature = age >= 7 && appState.starter.feedCount >= 7;
+
+      const warningCard = document.getElementById('immatureWarningCard');
+      const warningAge = document.getElementById('warningAgeNum');
+
+      if (!isMature) {
+        warningAge.textContent = `${age} (${appState.starter.feedCount} feedings so far)`;
+        warningCard.classList.remove('hidden');
+      } else {
+        warningCard.classList.add('hidden');
+      }
+
+      openModal('refrigerateModal');
+    };
+
+    function confirmRefrigerate() {
+      if (!appState.starter) return;
+
+      const now = Date.now();
+      appState.starter.isRefrigerated = true;
+      appState.starter.refrigeratedAt = now;
+      appState.starter.lastFedAt = now;
+      appState.starter.feedCount += 1;
+
+      if (!appState.starter.history) appState.starter.history = [];
+      appState.starter.history.unshift({
+        id: Date.now(),
+        timestamp: now,
+        action: 'Chilled in Refrigerator (3°C–5°C)',
+        details: 'Fed 1:2:2 (25g:50g:50g), rested 1.5h at 20°C, 7-day timer activated.'
+      });
+
+      saveState();
+      updateUI();
+      closeModal('refrigerateModal');
+      playChime('success');
+      showToast('Moved to Fridge', 'Weekly 7-day countdown initialized.', '❄️');
+    }
+
+    // --- Action: Reactivate Chilled Starter ---
+    document.getElementById('reactivateBtn').onclick = () => {
+      openModal('reactivateModal');
+    };
+
+    function confirmReactivate() {
+      if (!appState.starter) return;
+
+      const now = Date.now();
+      appState.starter.isRefrigerated = false;
+      appState.starter.refrigeratedAt = null;
+      appState.starter.lastFedAt = now;
+      appState.starter.feedCount += 1;
+
+      if (!appState.starter.history) appState.starter.history = [];
+      appState.starter.history.unshift({
+        id: Date.now(),
+        timestamp: now,
+        action: 'Reactivated from Fridge',
+        details: 'Warmed, fed 1:2:2 (25g starter + 50g Strong White Flour + 50g warm water at 26°C), returned to 24h schedule.'
+      });
+
+      saveState();
+      updateUI();
+      closeModal('reactivateModal');
+      playChime('success');
+      showToast('Culture Reactivated!', 'Returned to room-temperature 24h schedule.', '☀️');
+    }
+
+    // --- Action: New / Reset Starter ---
+    document.getElementById('promptNewStarterBtn').onclick = () => {
+      showConfirmModal(
+        'Reset Sourdough Starter?',
+        'This will erase your current starter profile and feeding log to create a new Day 1 culture.',
+        () => {
+          openNewStarterModal();
+        }
+      );
+    };
+
+    function openNewStarterModal() {
+      const warning = document.getElementById('newStarterWarning');
+      if (appState.starter) {
+        warning.classList.remove('hidden');
+      } else {
+        warning.classList.add('hidden');
+      }
+      openModal('newStarterModal');
+    }
+
+    function handleCreateStarter(e) {
+      e.preventDefault();
+      const name = document.getElementById('inputStarterName').value.trim() || 'My Sourdough';
+      const flour = document.getElementById('inputFlourType').value;
+      const now = Date.now();
+
+      appState.starter = {
+        name: name,
+        flour: flour,
+        createdAt: now,
+        lastFedAt: now,
+        feedCount: 1,
+        isRefrigerated: false,
+        refrigeratedAt: null,
+        history: [
+          {
+            id: now,
+            timestamp: now,
+            action: 'Day 1 Initial Mix',
+            details: `Mixed 50g ${flour} + 50g tepid water (24°C–26°C). Initial 24h rest.`
+          }
+        ]
+      };
+
+      saveState();
+      updateUI();
+      closeModal('newStarterModal');
+      playChime('success');
+      showToast('Culture Created!', `Welcome, ${name}! Day 1 begins.`, '🌾');
+    }
+
+    // --- Render Feeding History Log (DD/MM/YYYY, HH:MM 24h) ---
+    function renderFeedLogs() {
+      const container = document.getElementById('logListContainer');
+      const badge = document.getElementById('logCountBadge');
+      if (!appState.starter || !appState.starter.history || appState.starter.history.length === 0) {
+        container.innerHTML = `<div class="p-4 text-center text-xs text-espresso/60 bg-linen/50 rounded-2xl border border-stoneOat">No feeding history recorded yet.</div>`;
+        badge.textContent = '0 entries';
+        return;
+      }
+
+      badge.textContent = `${appState.starter.history.length} entries`;
+      container.innerHTML = appState.starter.history.map(item => {
+        const timeFormatted = formatEuDateTime(item.timestamp);
+        return `
+          <div class="p-3 bg-white rounded-2xl border border-stoneOat flex items-center justify-between text-xs hover:border-terracotta/30 transition shadow-xs">
+            <div class="space-y-0.5">
+              <span class="font-bold text-crust block">${escapeHtml(item.action)}</span>
+              <span class="text-espresso/70">${escapeHtml(item.details)}</span>
+            </div>
+            <span class="text-[11px] text-espresso/60 shrink-0 font-medium ml-3 font-mono">${timeFormatted}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // --- Tabs Switching ---
+    function switchTab(tab) {
+      const tabs = ['calc', 'logs', 'guide'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tabBtn${capitalize(t)}`);
+        const content = document.getElementById(`tabContent${capitalize(t)}`);
+        if (t === tab) {
+          btn.className = 'tab-button px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-crust text-white';
+          content.classList.remove('hidden');
+        } else {
+          btn.className = 'tab-button px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-linen text-espresso hover:text-crust';
+          content.classList.add('hidden');
+        }
+      });
+    }
+
+    function capitalize(s) {
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    // --- European Levain Scaler ---
+    const targetSlider = document.getElementById('targetWeightSlider');
+    const targetDisplay = document.getElementById('targetWeightDisplay');
+
+    targetSlider.addEventListener('input', () => {
+      recomputeCalc();
+    });
+
+    function setCalcRatio(s, f, w, buttonEl) {
+      calcRatio = { starter: s, flour: f, water: w };
+      document.querySelectorAll('.ratio-btn').forEach(btn => {
+        btn.className = 'ratio-btn px-2.5 py-1 text-xs font-bold rounded-lg text-espresso/70 hover:text-crust';
+      });
+      buttonEl.className = 'ratio-btn px-2.5 py-1 text-xs font-bold rounded-lg bg-white shadow-xs text-crust';
+      recomputeCalc();
+    }
+
+    function recomputeCalc() {
+      const totalYield = parseInt(targetSlider.value, 10);
+      targetDisplay.textContent = `${totalYield} grams`;
+
+      const sumParts = calcRatio.starter + calcRatio.flour + calcRatio.water;
+      const starterWeight = Math.round((calcRatio.starter / sumParts) * totalYield);
+      const flourWeight = Math.round((calcRatio.flour / sumParts) * totalYield);
+      const waterWeight = totalYield - starterWeight - flourWeight;
+
+      document.getElementById('calcStarterWeight').textContent = `${starterWeight}g`;
+      document.getElementById('calcFlourWeight').textContent = `${flourWeight}g`;
+      document.getElementById('calcWaterWeight').textContent = `${waterWeight}g`;
+    }
+
+    // --- Web Push Notifications & Permissions ---
+    const notifyBtn = document.getElementById('notifyToggleBtn');
+    const notifyBtnLabel = document.getElementById('notifyBtnLabel');
+    const testNotifyBtn = document.getElementById('testNotifyBtn');
+
+    function updateNotifyButtonUI() {
+      if (notificationsAllowed && Notification.permission === 'granted') {
+        notifyBtnLabel.textContent = 'Alerts On';
+        notifyBtn.className = 'px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition text-sageForest';
+      } else {
+        notifyBtnLabel.textContent = 'Alerts Off';
+        notifyBtn.className = 'px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition text-espresso/80 hover:text-terracotta';
+      }
+    }
+
+    notifyBtn.onclick = async () => {
+      if (!('Notification' in window)) {
+        showToast('Not Supported', 'Browser notifications not supported on this browser.', 'ℹ️');
+        return;
+      }
+
+      if (Notification.permission === 'granted') {
+        notificationsAllowed = !notificationsAllowed;
+        localStorage.setItem(NOTIF_STORAGE_KEY, notificationsAllowed);
+        updateNotifyButtonUI();
+        showToast(notificationsAllowed ? 'Alerts Enabled' : 'Alerts Silenced', notificationsAllowed ? 'You will be notified when feedings are due.' : 'Feeding alerts turned off.');
+      } else if (Notification.permission !== 'denied') {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          notificationsAllowed = true;
+          localStorage.setItem(NOTIF_STORAGE_KEY, 'true');
+          updateNotifyButtonUI();
+          showToast('Notifications Activated!', 'Feeding alerts will be sent on schedule.', '🔔');
+          triggerWebNotification('Levain & Panary Active', 'You will receive reminders when your culture is due for feeding.');
+        } else {
+          showToast('Permission Denied', 'Notifications permission was not granted.', '⚠️');
+        }
+      } else {
+        showToast('Blocked in Browser', 'Please unblock notifications in your browser site permissions.', '⚠️');
+      }
+    };
+
+    testNotifyBtn.onclick = async () => {
+      if (!('Notification' in window)) {
+        showToast('Push Notifications', 'This browser does not support Web Push notifications.', 'ℹ️');
+        return;
+      }
+
+      if (Notification.permission !== 'granted') {
+        const p = await Notification.requestPermission();
+        if (p === 'granted') {
+          notificationsAllowed = true;
+          localStorage.setItem(NOTIF_STORAGE_KEY, 'true');
+          updateNotifyButtonUI();
+        }
+      }
+
+      if (Notification.permission === 'granted') {
+        triggerWebNotification(
+          'Levain & Panary Reminder Test',
+          appState.starter ? `Time to feed ${appState.starter.name} (1:2:2 ratio at 20°C)!` : 'Your sourdough feeding notification system is active!'
+        );
+        playChime('alert');
+        showToast('Test Notification Sent!', 'Check your device notification tray.', '🔔');
+      } else {
+        showToast('Notification Blocked', 'Click Alerts button to grant permission first.', '⚠️');
+      }
+    };
+
+    function triggerWebNotification(title, body) {
+      if (!notificationsAllowed || Notification.permission !== 'granted') return;
+      try {
+        const notif = new Notification(title, {
+          body: body,
+          icon: 'https://placehold.co/128x128/B85D36/FFFFFF?text=🌾',
+          badge: 'https://placehold.co/96x96/B85D36/FFFFFF?text=🌾'
+        });
+        notif.onclick = () => {
+          window.focus();
+        };
+      } catch (err) {
+        console.warn('Notification error:', err);
+      }
+    }
+
+    let lastOverdueNotifiedMs = 0;
+    function scheduleNotificationIfDue() {
+      if (!appState.starter || !notificationsAllowed || Notification.permission !== 'granted') return;
+
+      const schedule = getScheduleDetails(appState.starter);
+      const totalIntervalMs = schedule.intervalHours * 3600 * 1000;
+      const nextDueMs = appState.starter.lastFedAt + totalIntervalMs;
+      const now = Date.now();
+
+      if (now >= nextDueMs) {
+        // Remind once every 2 hours if overdue
+        if (now - lastOverdueNotifiedMs > 2 * 3600 * 1000) {
+          triggerWebNotification(
+            `Feed ${appState.starter.name}!`,
+            `Your starter is due for its 24h feed (${schedule.ratio}).`
+          );
+          lastOverdueNotifiedMs = now;
+        }
+      }
+    }
+
+    // --- Audio Feedback Settings ---
+    const soundToggleBtn = document.getElementById('soundToggleBtn');
+    const soundIconOn = document.getElementById('soundIconOn');
+    const soundIconOff = document.getElementById('soundIconOff');
+
+    function updateSoundUI() {
+      if (soundEnabled) {
+        soundIconOn.classList.remove('hidden');
+        soundIconOff.classList.add('hidden');
+      } else {
+        soundIconOn.classList.add('hidden');
+        soundIconOff.classList.remove('hidden');
+      }
+    }
+
+    soundToggleBtn.onclick = () => {
+      soundEnabled = !soundEnabled;
+      localStorage.setItem(SOUND_STORAGE_KEY, soundEnabled);
+      updateSoundUI();
+      if (soundEnabled) playChime('success');
+      showToast(soundEnabled ? 'Audio On' : 'Muted', soundEnabled ? 'Audio feedback active' : 'Sound effects muted', '🔊');
+    };
+
+    // --- App Lifecycle Initialization ---
+    window.onload = function () {
+      loadState();
+      updateNotifyButtonUI();
+      updateSoundUI();
+      recomputeCalc();
+      updateUI();
+
+      // Tick countdown clock every second
+      timerInterval = setInterval(() => {
+        updateTimerDisplay();
+      }, 1000);
+
+      // Check notification schedule every 30 seconds
+      notifCheckInterval = setInterval(() => {
+        scheduleNotificationIfDue();
+      }, 30000);
+
+      // Initial check on load
+      setTimeout(scheduleNotificationIfDue, 1500);
+    };
+  </script>
+</body>
+</html>
